@@ -11,19 +11,30 @@
 #import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *flipsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *lastFlipResults;
-
-@property (nonatomic)       int         flipCount;
-
+@property (weak, nonatomic) IBOutlet                       UILabel  *flipsLabel;
+@property (weak, nonatomic) IBOutlet                       UILabel  *lastFlipResults;
+@property (nonatomic)                                      int      flipCount;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
-@property (strong, nonatomic) CardMatchingGame *game;
-@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (strong, nonatomic) CardMatchingGame                      *game;
+@property (weak, nonatomic) IBOutlet UILabel                        *scoreLabel;
 
 @end
 
 
 @implementation CardGameViewController
+
+
+- (IBAction)dealButton {
+    
+    // reset score, deck, flipcount, labels
+    
+    self.game = nil;  // will instantiate w deck using setter (lazy)
+    self.flipCount = nil;
+    self.lastFlipResults.text = @"flip the first card";
+    [self updateUI];
+    
+    
+}
 
 - (CardMatchingGame *)game
 {
@@ -49,6 +60,13 @@
         cardButton.selected = card.isFaceUp;
         cardButton.enabled = !card.isUnplayable;
         cardButton.alpha = card.isUnplayable ? 0.3 : 1.0;
+        
+        if (!cardButton.selected) {
+            [cardButton setBackgroundImage:[UIImage imageNamed:@"bluecard.jpg"] forState:(UIControlStateNormal)];
+        } else {
+            [cardButton setBackgroundImage:nil forState:UIControlStateNormal];
+        }
+        
  
     }
     
@@ -70,7 +88,7 @@
     
     Card *lastcard = [self.game cardAtIndex:[self.cardButtons indexOfObject:sender]];
     
-    self.lastFlipResults.text = [NSString stringWithFormat:@"Flipped up %@",lastcard.contents];
+    self.lastFlipResults.text = self.game.lastResult;
     
     [self updateUI];
 }

@@ -8,16 +8,9 @@
 
 #import "Card.h"
 
-
-@interface Card()
-
-@end
-
-
-
 @implementation Card
 
-- (int)match:(Card *)otherCards
+- (int)match:(NSArray *)otherCards
 {
     int score = 0;
 
